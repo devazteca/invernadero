@@ -6,7 +6,7 @@ function Home() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
-    const navigate = useNavigate(); // Para redirigir al usuario
+    const navigate = useNavigate(); //? Para redirigir al usuario
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,7 +17,7 @@ function Home() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ username, password }), // Asegúrate de que estos valores sean correctos
+                body: JSON.stringify({ username, password }),
             });
     
             const data = await response.json();
@@ -45,7 +45,7 @@ function Home() {
                         className="dark rounded-sm mb-10 mx-16"
                     />
                 </a>
-                <h2 className="text-2xl font-bold mb-6 text-center text-gray-500">Iniciar Sesión</h2>
+                <h2 className="text-3xl font-bold mb-6 text-center text-gray-500">Iniciar Sesión</h2>
                 {error && <p className="text-red-500 text-center">{error}</p>} {/* Muestra el error */}
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700" htmlFor="username">

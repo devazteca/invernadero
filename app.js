@@ -5,11 +5,11 @@ const bcrypt = require('bcrypt');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 5000; //TODO: Usa el puerto proporcionado por el entorno o 5000 como fallback
+const port = process.env.PORT || 5000;
 
 //TODO: Configura CORS para permitir solicitudes desde localhost:3000
 app.use(cors({
-    origin: 'http://localhost:3000', //TODO: Permite el acceso desde el frontend
+    origin: 'https://invernadero-alpha.vercel.app', //TODO: Permite el acceso desde el frontend
     methods: ['GET', 'POST'], //TODO: Métodos permitidos
     credentials: true, //TODO: Si necesitas usar cookies o sesiones
 }));
@@ -28,8 +28,13 @@ const sql = postgres({
     },
 });
 
+//TODO: Ruta base para verificar que el servidor está funcionando
+app.get('/', (req, res) => {
+    res.send('Servidor funcionando correctamente');
+});
+
 //TODO: Inicia sesión
-app.post('/', async (req, res) => {
+app.post('/login', async (req, res) => {
     const { username, password } = req.body;
     console.log('Datos recibidos:', username, password); //TODO: Para depurar y verificar que se reciban correctamente
     try {
@@ -93,5 +98,5 @@ app.post('/api/sensordata', async (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Servidor escuchando en el puerto ${port}`);
+    console.log(`Servidor ejecutándose en el puerto: ${port}`);
 });

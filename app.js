@@ -9,7 +9,7 @@ const port = process.env.PORT || 5000; //TODO: Usa el puerto proporcionado por e
 
 //TODO: Configura CORS para permitir solicitudes desde localhost:3000
 app.use(cors({
-    origin: 'https://invernadero-alpha.vercel.app/?vercelToolbarCode=c7uMqfVHvSfOAjm', //TODO: Permite el acceso desde el frontend
+    origin: 'http://localhost:3000', //TODO: Permite el acceso desde el frontend
     methods: ['GET', 'POST'], //TODO: Métodos permitidos
     credentials: true, //TODO: Si necesitas usar cookies o sesiones
 }));

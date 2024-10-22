@@ -1,13 +1,10 @@
 import './index.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './Home';
 //? Login
+import Home from './Home';
 import Register from './log/Register';
 //? Pages
 import Dashboard from './pages/Dashboard';
-import Index from './pages/Index';
-import Temperature from './pages/Temperature'
-import Humidity from './pages/Humidity';
 
 function App() {
   return (

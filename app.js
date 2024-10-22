@@ -17,6 +17,7 @@ app.use(cors({
 app.use(express.json()); //TODO: Para manejar solicitudes con cuerpo en formato JSON
 
 const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
+
 const sql = postgres({
     host: PGHOST,
     database: PGDATABASE,
@@ -28,22 +29,21 @@ const sql = postgres({
     },
 });
 
-//TODO: Ruta base para verificar que el servidor está funcionando
-app.get('/', (req, res) => {
-    res.send('Servidor funcionando correctamente');
-});
-
 //TODO: Inicia sesión
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
+    
     console.log('Datos recibidos:', username, password); //TODO: Para depurar y verificar que se reciban correctamente
+
     try {
         //TODO: Buscar el usuario en la base de datos por el nombre de usuario
         const result = await sql`SELECT * FROM users WHERE username = ${username}`;
+        
         //TODO: Verificar si el usuario existe
         if (result.length > 0) {
             const user = result[0]; //TODO: Obtener el usuario encontrado
             const passwordMatch = await bcrypt.compare(password, user.pass); //TODO: Comparar la contraseña
+
             if (passwordMatch) {
                 //TODO: Si las contraseñas coinciden, enviar una respuesta de éxito
                 res.status(200).json({ message: 'Inicio de sesión exitoso' });
@@ -64,17 +64,22 @@ app.post('/login', async (req, res) => {
 //TODO: Registra un nuevo usuario
 app.post('/register', async (req, res) => {
     const { username, password, phone } = req.body;
+
     try {
         //TODO: Verificar si el nombre de usuario ya existe
         const checkUserResult = await sql`SELECT * FROM users WHERE username = ${username}`;
+
         if (checkUserResult.length > 0) {
             //TODO: Si ya existe un usuario con ese nombre, devolver un error específico
             return res.status(400).json({ message: 'El usuario ya existe, intente con otro.' });
         }
+
         //TODO: Hashear la contraseña
         const hashedPassword = await bcrypt.hash(password, 10);
+
         //TODO: Insertar nuevo usuario en la base de datos
         await sql`INSERT INTO users (username, pass, phone) VALUES (${username}, ${hashedPassword}, ${phone})`;
+
         //TODO: Respuesta exitosa
         res.status(201).json({ message: 'Usuario registrado exitosamente' });
     } catch (error) {
@@ -86,10 +91,12 @@ app.post('/register', async (req, res) => {
 //TODO: Endpoint para recibir datos del ESP32
 app.post('/api/sensordata', async (req, res) => {
     const { sensorValueH, sensorValueT } = req.body;
+
     try {
         //TODO: Inserta el valor del sensor en la tabla 'sensor_data'
         await sql`INSERT INTO humidity_data (humidity) VALUES (${sensorValueH})`;
         await sql`INSERT INTO temperature_data (temperature) VALUES (${sensorValueT})`;
+        
         res.status(200).send('Datos insertados correctamente');
     } catch (error) {
         console.error(error);
@@ -98,5 +105,5 @@ app.post('/api/sensordata', async (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Servidor ejecutándose en el puerto: ${port}`);
+    console.log(`Servidor ejecutandose en el puerto: ${port}`);
 });
